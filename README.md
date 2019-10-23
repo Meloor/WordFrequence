@@ -1,11 +1,22 @@
 # WordSequence
+开发工具：VS2017
+实现方式：C++, 所有功能都对应一个类封装
+提示：
+* 目前所有功能只考虑了相对路径的情况，绝对路径没有测试，有可能会出错。
+* 工程名是WF,所以生成的的exe文件名是WF.exe, 后面会改成wf.exe
 
-## 功能0：wf.exe -c <file name>
+## 功能0：wf.exe -c file_path
 
 * 输出某个英文文本文件中 26 字母出现的频率，由高到低排列，并显示字母出现的百分比，精确到小数点后面两位。
 
-##功能1：wf.exe -f <file name>  
+## 功能1：wf.exe -f file_path 
+
 * 输出文件中所有不重复的单词，按照出现次数由多到少排列，出现次数同样多的，以字典序排列。
-* 该功能的输出将输出到文件，文件名为 word sequence of + <file name>
+
+## 功能2：wf.exe -d directory_name
+
+* 指定文件目录，对目录下每一个文件执行  wf.exe -f <file> 的操作。
+* 扩展功能:`wf.exe -d -s  directory_name`,功能同上,区别是会递归遍历目录下的所有子目录。
+
 
 

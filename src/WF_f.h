@@ -1,3 +1,7 @@
+/*
+ *@相对路径也可以分为path,和name,file_path = path + name
+ *比如file_name:test\hello.txt是一个相对路径,拆分后，path:test\, name:hello.txt
+ */
 #pragma once
 #include<iostream>
 #include<fstream>
@@ -8,6 +12,7 @@
 #include<vector>
 #include<map>
 #include<ctype.h>
+#include<string>
 using namespace std;
 struct Word {
 	string va;
@@ -24,20 +29,23 @@ struct Word {
 class WF_f
 {
 private:
-	static const int  MAX_LINE = 1024;
+	string buf;
 	vector<Word> wds;
 	map<string, int> wmp;
 	string wd = "";//单词
 	int total;//单词种类数 
-	char buf[MAX_LINE + 1];  /*缓冲区*/
+	string floder_path;
+	string file_name;
 private:
-	void judge(char *a);
+	void judge(string buf);
 	void write_file(fstream &fout);
-	void open_write(char *origin_file_name);
-	void solve(char *file_name);
+	void print_cnt();
+	void open_write(string file_path);
+	void separate_path(string file_path);
+	void solve(string file_path);
 public:
 	WF_f();
 	~WF_f();
-	static void Solve(char* file_name);
+	static void Solve(string file_path);
 };
 

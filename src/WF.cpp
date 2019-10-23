@@ -8,20 +8,29 @@ int main(int argc, char *argv[])
 {
 	if (argc == 1) {
 		printf("请在命令行中运行该程序！\n");
-		printf("%s\n", hint);
+		cout << hint << endl;
 	}
 	else if (argc == 2) {
-		printf("%s\n", hint);
+		cout << hint << endl;
 	}
 	else if (argc == 3) {
 		if (strcmp(argv[1], "-c") == 0) {
-			WF_c::Solve(argv[2]);
+			WF_c::Solve(string(argv[2]));
 		}
 		else if (strcmp(argv[1], "-f") == 0) {
-			WF_f::Solve(argv[2]);
+			WF_f::Solve(string(argv[2]));
+		}
+		else if (strcmp(argv[1], "-d") == 0) {
+			WF_d::Solve(string(argv[2]));
 		}
 		else printf("%s\n", hint);
 	}
+	else if (argc == 4) {
+		if (strcmp(argv[1], "-d") == 0 && strcmp(argv[2], "-s") == 0) {
+			WF_d_s::Solve(string(argv[3]));
+		}
+	}
+	else cout << hint << endl;
 	return 0;
 }
 

@@ -21,7 +21,7 @@ void WF_c::judge(char a[]) {
 		}
 	}
 }
-void WF_c::solve(char *file_name) {
+void WF_c::solve(string file_name) {
 	memset(num, 0, sizeof(num));
 	total = 0;
 
@@ -47,7 +47,8 @@ void WF_c::solve(char *file_name) {
 		printf("%2d %c:%.2f\n", i + 1, wf[i].name, wf[i].wf);
 	}
 }
-void WF_c::Solve(char *file_name) {
+void WF_c::Solve(string file_name) {
 	WF_c* wf_c = new WF_c();
 	wf_c->solve(file_name);
+	delete wf_c;
 }

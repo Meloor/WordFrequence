@@ -5,7 +5,7 @@ author:Meloor
 */
 #include "pch.h"
 #include "WF_f.h"
-
+#include <string>
 
 WF_f::WF_f()
 {
@@ -17,15 +17,16 @@ WF_f::~WF_f()
 }
 
 //处理一行字符 
-void WF_f::judge(char *a) {
-	for (int i = 0; a[i]; i++) {
+void WF_f::judge(string buf) {
+	for (int i = 0; buf[i]; i++) {
+		unsigned char ch = buf[i];
 		if (wd.length() == 0) {
-			if (isalpha(a[i]))
-				wd = wd + (char)tolower(a[i]);
+			if (isalpha(ch))
+				wd = wd + (char)tolower(ch);
 		}
 		else {
-			if (isalnum(a[i]))
-				wd = wd + (char)tolower(a[i]);
+			if (isalnum(ch))
+				wd = wd + (char)tolower(ch);
 			else {
 				if (wmp.count(wd) == 0) {
 					wmp[wd] = 0;
@@ -37,7 +38,9 @@ void WF_f::judge(char *a) {
 		}
 	}
 }
-
+/*
+ *@这个函数会将输出写入到文件，如果不存在则会创建
+ */
 void WF_f::write_file(fstream &fout) {
 	fout << "排名\t\t\t单词\t\t\t出现次数" << endl;
 	for (int i = 0; i < wds.size(); i++) {
@@ -50,15 +53,51 @@ void WF_f::write_file(fstream &fout) {
 		fout << wds[i].cnt << endl;
 	}
 }
-void WF_f::open_write(char *origin_file_name) {
+/*
+ *@打印到屏幕上
+ */
+void WF_f::print_cnt() {
+	cout << "排名\t\t\t单词\t\t\t出现次数" << endl;
+	for (int i = 0; i < wds.size(); i++) {
+		cout << i + 1 << "\t\t\t";
+		cout << wds[i].va;
+		int nt = wds[i].va.length() / 8;//1~7,3t;8~15,2t;16~23,1t;24~31,0t;
+		for (int i = 0; i < 3 - nt; i++)
+			cout << "\t";
+		cout << wds[i].cnt << endl;
+	}
+}
+//分离file_path为floder_path + file_name
+void WF_f::separate_path(string file_path) {
+	int len = file_path.length();
+	int id = -1;
+	//寻找并记录下最后一个反斜杠\的位置
+	for (int i = len - 1; i >= 0; i--) {
+		if (file_path[i] == '\\') {
+			id = i;
+			break;
+		}
+	}
+	//如果file_path本来也只有文件名，那么file_path == file_name
+	floder_path = file_path.substr(0,id+1);//[0,id]是id+1个字符
+	file_name = file_path.substr(id+1);//拷贝后面的
+
+}
+/*如果穿进来的参数不只是文件名，而是包含了路径，那么
+ *输出的文件名是要小心谨慎的
+ */
+void WF_f::open_write(string file_path) {
+	separate_path(file_path);
+	string str = "word sequence of ";
+	string fname = floder_path + str + file_name;//输入文件路径（相对）
+	printf("write to \"%s\"\n", fname.data());
+	
 	fstream f1;
-	char fname[128] = "word sequence of ";
-	strcat_s(fname, origin_file_name);
-	printf("write to \"%s\"\n", fname);
 	f1.open(fname, ios::in);//以读的方式打开 
 	if (!f1) {//文件不存在 
 		f1.close();
 		f1.open(fname, ios::out);//则创建它
+		if (!f1)cout << "创建失败" << endl;
 		write_file(f1);
 		f1.close();
 	}
@@ -68,8 +107,12 @@ void WF_f::open_write(char *origin_file_name) {
 		write_file(f1);
 		f1.close();
 	}
+	
 }
-void WF_f::solve(char *file_name) {
+/*
+ *@这个函数会打开file_path文件，如果文件不存在就会报错并退出
+ */
+void WF_f::solve(string file_path) {
 	//初始化 
 	wds.clear();
 	wmp.clear();
@@ -77,16 +120,17 @@ void WF_f::solve(char *file_name) {
 	wd = "";
 
 	ifstream fin;
-	fin.open(file_name);
+	fin.open(file_path);
 	if (!fin.is_open())
 	{
-		cout << "Error opening file";
+		cout << "Error opening file,file is not found"<<endl;
 		exit(1);
 	}
 	while (!fin.eof())
 	{
-		fin.getline(buf, MAX_LINE);
+		getline(fin, buf);//使用string来读取没有长度限制
 		judge(buf);
+		//cout << buf << endl;
 	}
 
 
@@ -95,9 +139,10 @@ void WF_f::solve(char *file_name) {
 		wds.push_back(Word(it->first, it->second));
 	}
 	sort(wds.begin(), wds.end());
-	open_write(file_name);
+	//open_write(file_path);//输出到文件中
+	print_cnt();
 }
-void WF_f::Solve(char *file_name) {
-	WF_f* wf_f = new WF_f();
-	wf_f->solve(file_name);
+void WF_f::Solve(string file_path) {
+	WF_f wf_f;
+	wf_f.solve(file_path);
 }

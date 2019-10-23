@@ -31,10 +31,10 @@ private:
 private:
 	void judge(char a[]);
 	//bool cmp(ZM a, ZM b);
-	void solve(char *file_name);
+	void solve(string file_name);
 public:
 	WF_c();
 	~WF_c();
-	static void Solve(char *file_name);//main函数中输入的是char*
+	static void Solve(string file_name);//main函数中输入的是char*
 };
 
