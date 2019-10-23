@@ -13,10 +13,14 @@ private:
 	void getFilesInFloder(string path, bool is_recursive_subfolder);	
 	static bool cmp(string &a, string &b);
 protected:
-	void solve(string floder_name, bool is_recursive_subfolder);
+	void solve_c(string floder_name, bool _n, int _n_num, bool _s);
+	void solve_f(string floder_name, bool _n, int _n_num, bool _s);
+	void solve_p(string floder_name, bool _n, int _n_num, bool _s);
 public:
 	WF_d();
 	~WF_d();
-	static void Solve(string floder_name);
+	static void Solve_c(string floder_name,bool _n,int _n_num,bool _s);
+	static void Solve_f(string floder_name,bool _n,int _n_num,bool _s);
+	static void Solve_p(string floder_name,bool _n,int _n_num,bool _s);
 };
 

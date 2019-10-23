@@ -53,20 +53,7 @@ void WF_f::write_file(fstream &fout) {
 		fout << wds[i].cnt << endl;
 	}
 }
-/*
- *@打印到屏幕上
- */
-void WF_f::print_cnt() {
-	cout << "排名\t\t\t单词\t\t\t出现次数" << endl;
-	for (int i = 0; i < wds.size(); i++) {
-		cout << i + 1 << "\t\t\t";
-		cout << wds[i].va;
-		int nt = wds[i].va.length() / 8;//1~7,3t;8~15,2t;16~23,1t;24~31,0t;
-		for (int i = 0; i < 3 - nt; i++)
-			cout << "\t";
-		cout << wds[i].cnt << endl;
-	}
-}
+
 //分离file_path为floder_path + file_name
 void WF_f::separate_path(string file_path) {
 	int len = file_path.length();
@@ -109,10 +96,11 @@ void WF_f::open_write(string file_path) {
 	}
 	
 }
-/*
+/* function: 统计file_path对应文件的单词频率，并输出排行
  *@这个函数会打开file_path文件，如果文件不存在就会报错并退出
  */
-void WF_f::solve(string file_path) {
+
+void WF_f::get_word_sequence(string file_path) {
 	//初始化 
 	wds.clear();
 	wmp.clear();
@@ -140,9 +128,36 @@ void WF_f::solve(string file_path) {
 	}
 	sort(wds.begin(), wds.end());
 	//open_write(file_path);//输出到文件中
-	print_cnt();
+	//print_cnt();
 }
-void WF_f::Solve(string file_path) {
+/*
+ *@打印到屏幕上,打印前num个
+ */
+void WF_f::print_cnt(bool _n,int num) {
+	int n;
+	if (_n)
+		n = min(num,(int)wds.size());//防止n大于wds.size()
+	else //没有设置_n参数,默认输出所有
+		n = wds.size();
+	if (num = -1)
+		cout << "排名\t\t\t单词\t\t\t出现次数" << endl;
+	for (int i = 0; i < n; i++) {
+		cout << i + 1 << "\t\t\t";
+		cout << wds[i].va;
+		int nt = wds[i].va.length() / 8;//1~7,3t;8~15,2t;16~23,1t;24~31,0t;
+		for (int i = 0; i < 3 - nt; i++)
+			cout << "\t";
+		cout << wds[i].cnt << endl;
+	}
+}
+/*
+ * 这个函数加了num限制，用于输出频率排行，可以被反复调用
+ */
+void WF_f::solve(string file_path,bool _n, int _n_num) {
+	get_word_sequence(file_path);
+	print_cnt(_n, _n_num);
+}
+void WF_f::Solve(string file_path,bool _n,int _n_num) {
 	WF_f wf_f;
-	wf_f.solve(file_path);
+	wf_f.solve(file_path,_n,_n_num);
 }

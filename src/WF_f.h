@@ -39,13 +39,14 @@ private:
 private:
 	void judge(string buf);
 	void write_file(fstream &fout);
-	void print_cnt();
+	void print_cnt(bool _n, int num);
 	void open_write(string file_path);
 	void separate_path(string file_path);
-	void solve(string file_path);
+	void get_word_sequence(string file_path);
+	void solve(string file_path, bool _n, int _n_num);
 public:
 	WF_f();
 	~WF_f();
-	static void Solve(string file_path);
+	static void Solve(string file_path, bool _n,int _n_num);
 };
 
