@@ -18,6 +18,9 @@ Go::Go()
 
 	_n_num = 0;
 	_p_num = 0;
+	file_path = "file_path";
+	_x_file_path = "_x_file_path";
+	_v_file_path = "_v_file_path";
 }
 
 
@@ -164,14 +167,26 @@ void Go::analyse_parameters(int argc, char *argv[]) {
 	}
 }
 void Go::hint() {
-	string hints = string("Input format:\n") +
-		"WF.exe -c file_name\n" +
-		"WF.exe -f file_name\n" +
-		"WF.exe -d file_name\n" +
-		"WF.exe -d -s file_name\n" +
-		"If the file_name contains space, please use this format:\n" +
-		"WF.exe -c \"file_name\"\n";
+	string examples = string("examples:\n") +
+		"WF.exe -c file_path\n" +
+		"WF.exe -f file_path\n" +
+		"WF.exe -f -d floder_path\n" +
+		"WF.exe -f -d -s floder_path\n" +
+		"WF.exe -f -d -s floder_path -n num\n"+
+		"WF.exe -f -d -s floder_path -n num -x _x_file_path\n" +
+		"If the file_path contains space, please use this format:\n" +
+		"WF.exe -f \"file_path\"\n";
+	string hints = string("参数说明：\n") +
+		"-c 统计字母频率排行，由高到低排列\n" +
+		"-f 统计单词频率排行，由高到低排列\n" +
+		"-d 指定文件目录，默认是当前目录下\n" +
+		"-s 递归子目录（如果指定了文件目录）（默认不递归）\n" +
+		"-n 后面紧跟一个参数num，设置只输出排行榜前num个，默认为输出全部\n" +
+		"-x 指定停词表（在统计单词时跳过这些单词）\n" +
+		"-p 后面紧跟一个参数num, 统计短语频率排行，由高到低排列，只统计由num个单词组成的短语\n" +
+		"-v 指定动词形态表（每行一组单词，都是一个动词的不同形态\n";
 	cout << hints << endl;
+	cout << examples << endl;
 }
 void Go::test_analyse() {
 	cout << "analyse parameters:" << endl;
@@ -185,27 +200,29 @@ void Go::test_analyse() {
 	cout << "_v:" << _v << endl;
 
 	cout << "file_path:" << file_path << endl;
+	cout << "_x_file_path:" << _x_file_path << endl;
 	cout << "_n_num:" << _n_num << endl << endl;;
 }
 void Go::solve(int argc, char *argv[]) {
 	analyse_parameters(argc, argv);
-	test_analyse();
+	//test_analyse();
 	if (_c) {		
 		if (_d) {//如果_d为true，那么file_path为floder_name
 			//WF_d::Solve_c(file_path, _n, _num, _s);
 			cout << "等待实装" << endl;
 		}
 		else {
+			WF_c::Solve(file_path);
 			//WF_c::Solve(file_path, _n, _n_num);
-			cout << "等待实装" << endl;
+			//cout << "等待实装" << endl;
 		}
 	}
 	else if (_f) {
 		if (_d) {
-			WF_d::Solve_f(file_path,_n,_n_num,_s);
+			WF_d::Solve_f(file_path,_n,_n_num, _x,_x_file_path,_s);
 		}
-		else {
-			WF_f::Solve(file_path,_n,_n_num);
+		else{
+			WF_f::Solve(file_path,_n,_n_num,_x,_x_file_path);
 		}
 	}
 	else if (_p) {

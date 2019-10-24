@@ -30,23 +30,32 @@ class WF_f
 {
 private:
 	string buf;
-	vector<Word> wds;
-	map<string, int> wmp;
-	string wd = "";//单词
+	vector<Word> words_sequence;
+	map<string,int> stopwords_mp;
+	map<string, int> words_mp;
 	int total;//单词种类数 
 	string floder_path;
 	string file_name;
 private:
-	void judge(string buf);
+	//提取单词及其数量到map
+	void get_words_from_line(string buf, map<string, int> &mp);
+	void get_words_from_file(string file_path, map<string, int> &mp);
+	//输出函数
 	void write_file(fstream &fout);
 	void print_cnt(bool _n, int num);
 	void open_write(string file_path);
+	void print_stopwords();
+	//处理路径
 	void separate_path(string file_path);
-	void get_word_sequence(string file_path);
-	void solve(string file_path, bool _n, int _n_num);
+	//
+	void get_stopwords(string _x_file_path);
+	void get_words(string file_path);
+	void get_word_sequence();
+	//功能函数
+	void solve(string file_path, bool _n, int _n_num, bool _x, string _x_file_path);
 public:
 	WF_f();
 	~WF_f();
-	static void Solve(string file_path, bool _n,int _n_num);
+	static void Solve(string file_path, bool _n,int _n_num,bool _x,string _x_file_path);
 };
 
