@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "WF_d.h"
 #include "WF_f.h"
-
+#include "WF_p.h"
 WF_d::WF_d()
 {
 }
@@ -71,8 +71,22 @@ void WF_d::solve_f(string floder_name, bool _n, int _n_num,bool _x,string _x_fil
 		WF_f::Solve(file_path[i],_n,_n_num,_x,_x_filepath);
 	}
 }
-void WF_d::solve_p(string floder_name, bool _n, int _n_num, bool _s) {
+void WF_d::solve_p(string floder_name,int _p_num, bool _n, int _n_num, bool _x, string _x_file_path, bool _s) {
+	file_path.clear();
+	file_name.clear();
+	getFilesInFloder(floder_name, _s);
+	printf("file num:%d\n", file_path.size());
 
+	sort(file_path.begin(), file_path.end(), cmp);
+	for (int i = 0; i < file_path.size(); i++) {
+		cout << file_path[i] << endl;
+	}
+	//获取文件名是没问题的
+
+	for (int i = 0; i < file_path.size(); i++) {
+		printf("%2d statisticsing file \"%s\" ...\n", i + 1, file_name[i].data());
+		WF_p::Solve(file_path[i],_p_num, _n, _n_num,_x,_x_file_path);
+	}
 }
 void WF_d::Solve_c(string floder_name, bool _n, int _n_num, bool _s) {
 
@@ -81,6 +95,7 @@ void WF_d::Solve_f(string floder_name, bool _n, int _n_num,bool _x,string _x_fil
 	WF_d wf_d;
 	wf_d.solve_f(floder_name,_n,_n_num,_x,_x_file_path,_s);
 }
-void WF_d::Solve_p(string floder_name, bool _n, int _n_num, bool _s) {
-
+void WF_d::Solve_p(string floder_name,int _p_num, bool _n, int _n_num, bool _x, string _x_file_path, bool _s) {
+	WF_d wf_d;
+	wf_d.solve_p(floder_name,_p_num, _n, _n_num,_x,_x_file_path, _s);
 }

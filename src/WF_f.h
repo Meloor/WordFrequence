@@ -23,7 +23,7 @@ struct Word {
 	}
 	bool operator<(const Word &b) const
 	{
-		return (cnt > b.cnt) || (cnt == b.cnt && va > b.va);;//频率大的排在前面
+		return (cnt > b.cnt) || (cnt == b.cnt && va > b.va);//频率大的排在前面
 	}
 };
 class WF_f

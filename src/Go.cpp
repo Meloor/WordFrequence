@@ -201,6 +201,7 @@ void Go::test_analyse() {
 
 	cout << "file_path:" << file_path << endl;
 	cout << "_x_file_path:" << _x_file_path << endl;
+	cout << "_p_num:" << _p_num << endl;
 	cout << "_n_num:" << _n_num << endl << endl;;
 }
 void Go::solve(int argc, char *argv[]) {
@@ -227,12 +228,10 @@ void Go::solve(int argc, char *argv[]) {
 	}
 	else if (_p) {
 		if (_d) {
-			//WF_d::Solve_p(file_path, _n, _num, _s);
-			cout << "等待实装" << endl;
+			WF_d::Solve_p(file_path,_p_num, _n, _n_num,_x,_x_file_path, _s);
 		}
 		else {
-			//WF_p::Solve(file_path, _n, _n_num);
-			cout << "等待实装" << endl;
+			WF_p::Solve(file_path,_p_num, _n, _n_num,_x,_x_file_path);
 		}
 		
 	}
