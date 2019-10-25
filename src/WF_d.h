@@ -14,13 +14,13 @@ private:
 	static bool cmp(string &a, string &b);
 protected:
 	void solve_c(string floder_name, bool _n, int _n_num, bool _s);
-	void solve_f(string floder_name, bool _n, int _n_num, bool _x, string _x_filepath, bool _s);
+	void solve_f(string floder_name, bool _n, int _n_num, bool _x, string _x_filepath,bool _v,string _v_file_path, bool _s);
 	void solve_p(string floder_name, int _p_num, bool _n, int _n_num, bool _x, string _x_file_path, bool _s);
 public:
 	WF_d();
 	~WF_d();
 	static void Solve_c(string floder_name,bool _n,int _n_num,bool _s);
-	static void Solve_f(string floder_name, bool _n, int _n_num, bool _x, string _x_filepath, bool _s);
+	static void Solve_f(string floder_name, bool _n, int _n_num, bool _x, string _x_filepath,bool _v,string _v_file_path, bool _s);
 	static void Solve_p(string floder_name,int _p_num,bool _n,int _n_num, bool _x, string _x_file_path, bool _s);
 };
 

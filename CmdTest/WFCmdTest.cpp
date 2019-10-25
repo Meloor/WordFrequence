@@ -13,15 +13,24 @@ const int N = 5;
 void init_tests() {
 	tests.clear();
 	//tests.push_back("WF.exe -c \"1.I Have a Dream.txt\"");
+
+	//-f功能，目前支持-n,-d -s,-x,-v
 	//tests.push_back("WF.exe -f \"1.I Have a Dream.txt\"");
 	//tests.push_back("WF.exe -f \"1.I Have a Dream.txt\" -n 5");
 	//tests.push_back("WF.exe -f -d tests -n 5 -x \"stopwords.txt\"");
 	//tests.push_back("WF.exe -f -d -s tests -n 5 -x \"stopwords.txt\"");
 	//tests.push_back("WF.exe -f \"1.I Have a Dream.txt\" -n 5 -x \"stopwords.txt\"");
-	tests.push_back("WF.exe -p 2 \"hello.txt\"");
-	tests.push_back("WF.exe -p 3 \"hello.txt\"");
-	tests.push_back("WF.exe -p 2 \"1.I Have a Dream.txt\" -n 5");
-	tests.push_back("WF.exe -p 2 -d tests -n 5");
+	//-v测试
+	tests.push_back("WF.exe -f verbs.txt -n 50 ");
+	tests.push_back("WF.exe -f verbs.txt -n 50  -v verbs.txt");
+	//和挺词表一起使用测试正常，停词表中加入了排名前几的单词，加入后就不再输出了
+	tests.push_back("WF.exe -f verbs.txt -n 50 -x stopwords.txt -v verbs.txt");
+	tests.push_back("WF.exe -f -d tests -n 10 -x stopwords.txt -v verbs.txt");
+	//-p功能，目前支持-n,-d -s,
+	//tests.push_back("WF.exe -p 2 \"hello.txt\"");
+	//tests.push_back("WF.exe -p 3 \"hello.txt\"");
+	//tests.push_back("WF.exe -p 2 \"1.I Have a Dream.txt\" -n 5");
+	//tests.push_back("WF.exe -p 2 -d tests -n 5");
 
 }
 void run_tests() {

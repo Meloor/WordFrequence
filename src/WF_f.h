@@ -33,9 +33,11 @@ private:
 	vector<Word> words_sequence;
 	map<string,int> stopwords_mp;
 	map<string, int> words_mp;
-	int total;//单词种类数 
+	map<string, int> verbs_mp;//存所有动词，map[string]中的值是其原型在verbs_proto中的下标
+	vector<string> verbs_proto;//存动词原型
 	string floder_path;
 	string file_name;
+	int total;
 private:
 	//提取单词及其数量到map
 	void get_words_from_line(string buf, map<string, int> &mp);
@@ -50,12 +52,13 @@ private:
 	//
 	void get_stopwords(string _x_file_path);
 	void get_words(string file_path);
-	void get_word_sequence();
+	void get_word_sequence(bool _v);
+	void get_verbs(string file_path);
 	//功能函数
-	void solve(string file_path, bool _n, int _n_num, bool _x, string _x_file_path);
+	void solve(string file_path, bool _n, int _n_num, bool _x, string _x_file_path, bool _v, string _v_file_path);
 public:
 	WF_f();
 	~WF_f();
-	static void Solve(string file_path, bool _n,int _n_num,bool _x,string _x_file_path);
+	static void Solve(string file_path, bool _n,int _n_num,bool _x,string _x_file_path, bool _v, string _v_file_path);
 };
 

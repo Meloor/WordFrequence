@@ -6,11 +6,10 @@
     * 工程名是WF,所以生成的的exe文件名是WF.exe, 后面会改成wf.exe
 
 ## 源码更新说明：
-* 实现了功能5,-p参数的作用。
-* 增加了Phrase短语类
-* 主要实装了WF_p类，很多地方和WF_f类似，后面会考虑继续优化
-* 删除了WF.rar工程文件压缩包，太冗余了
-* 添加了CmdTest文件夹，用于存放单元测试源码
+* 实现了功能6,-v参数的作用。
+* 主要更改了WF_f类
+* 添加了VS2017工程压缩包
+* 添加了wf.exe(由WF.exe更名过来)，在Proj目录下
 
 ## 单元测试程序WFCmdTest使用说明
 
@@ -29,10 +28,12 @@
 ## 功能0：`-c file_path`
 
 * 输出某个英文文本文件中 26 字母出现的频率，由高到低排列，并显示字母出现的百分比，精确到小数点后面两位。
+* 例子：·`wf.exe -c file_path`
 
 ## 功能1： `-f file_path`
 
 * 输出文件中所有不重复的单词，按照出现次数由多到少排列，出现次数同样多的，以字典序排列。
+* 例子：`wf.exe -f file_path`
 
 ## 功能2： `-d (-s) floder_name`
 
@@ -58,6 +59,15 @@
 * 例1：`wf.exe -p 2 file_path`
 * 例2：`wf.exe -p 3 file_path -n _n_num`
 * 例3：`wf.exe -p 2 -d -s floder_path`
+
+## 功能6：`-v _v_file_path`
+
+* 支持动词形态的归一化,就是把动词的各种变形都归为它的原型来统计
+* 支持-f对应的功能，-p还未实现
+* 例1：`wf.exe -f file_path -n _n_num -x _x_file_path -v _v_file_path`
+
+* 例2：`wf.exe -f file_path -n _n_num -x _x_file_path -v _v_file_path`
+* 例3：`wf.exe -f file_path -d floder_name -n _n_num  -v _v_file_path`
 
 
 

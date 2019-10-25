@@ -2,6 +2,17 @@
 function:输出文件中所有不重复的单词，按照出现次数由多到少排列，出现次数同样多的，以字典序排列。
 date:2019/9/25
 author:Meloor
+
+question:如何实现-v功能
+对于verbs_file的每一行，首先将每个单词添加到verbs_mp中
+将每行的第一个比如take添加到verbs_proto中
+将行所有单词对应的mp指向vector中存其原型的下标
+
+map<string,int> verbs;
+vector<string> verbs_proto;//只存原型
+目前可以生产words_mp表存所有单词，在遍历这个mp时，首先判断这个单词在verbs_mp中是否存在，如果存在则替换为原型。
+然后再判断是否在停词表（都为原型）中，如果在，如果在就不添加到vector中。
+
 */
 #include "pch.h"
 #include "WF_f.h"
@@ -12,6 +23,8 @@ WF_f::WF_f()
 	stopwords_mp.clear();
 	words_mp.clear();
 	words_sequence.clear();
+	verbs_mp.clear();
+	verbs_proto.clear();
 	total = 0;
 }
 
@@ -81,7 +94,7 @@ void WF_f::print_cnt(bool _n, int num) {
 	}
 }
 
-//处理一行的字符，提取单词到制定mp中
+//处理一行的字符，提取单词到指定mp中
 void WF_f::get_words_from_line(string buf, map<string, int> &mp) {
 	string wd = "";
 	for (int i = 0; i<buf.length(); i++) {
@@ -164,8 +177,86 @@ void WF_f::get_words(string file_path) {
 	get_words_from_file(file_path,words_mp);
 }
 
-void WF_f::get_word_sequence() {
+/*
+该函数参照了get_words_from_file,由于动词还涉及到一个vector,所以就重写get_words_from_file了
+*/
+void WF_f::get_verbs(string file_path) {
+	verbs_mp.clear();
+	verbs_proto.clear();
+
+	ifstream fin;
+	fin.open(file_path);
+	if (!fin.is_open())
+	{
+		cout << "Error opening file,file " + file_path + " is not found!" << endl;
+		exit(1);
+	}
+	while (!fin.eof())
+	{
+		getline(fin, buf);//使用string来读取没有长度限制
+		//下面读取verb到verbs_mp,verbs_proto中
+		string wd = "";
+		map<string, int> &mp = verbs_mp;
+		vector<string> &vp = verbs_proto;
+		bool is_first = true;
+		for (int i = 0; i < buf.length(); i++) {
+			unsigned char ch = buf[i];
+			if (wd.length() == 0) {
+				if (isalpha(ch)) {
+					wd = wd + (char)tolower(ch);
+
+					//单词长度只有1的情况,添加单词					
+					if (i == buf.length() - 1) {
+						if (is_first) {//是该行的第一个单词
+							is_first = false;
+							vp.push_back(wd);//添加了一个原型
+						}
+						if (mp.count(wd) == 0) {
+							mp[wd] = vp.size() - 1;//原型下标
+						}
+						mp[wd] = vp.size() - 1;
+						wd = "";
+					}
+				}
+			}
+			else {
+				if (isalnum(ch))
+					wd = wd + (char)tolower(ch);
+				if (!isalnum(ch) || i == buf.length() - 1) {
+					//添加单词
+					if (is_first) {//是该行的第一个单词
+						is_first = false;
+						vp.push_back(wd);//添加了一个原型
+					}
+					if (mp.count(wd) == 0) {
+						mp[wd] = vp.size() - 1;//原型下标
+					}
+					mp[wd] = vp.size() - 1;
+					wd = "";
+				}
+			}
+		}
+		//cout << buf << endl;
+	}
+}
+void WF_f::get_word_sequence(bool _v) {
 	total = 0;
+	//首先要把words_mp中的所用动词都替换成原型，所以，再加一个mp
+	if (_v) {
+		map<string, int> mp;
+		map<string, int>::iterator  it;
+		string wd = "";
+		for (it = words_mp.begin(); it != words_mp.end(); it++) {
+			wd = it->first;
+			if (verbs_mp.count(it->first) == 1) {//这个词在verbs中存在
+				wd = verbs_proto[verbs_mp[it->first]];//设置为其原型
+			}
+			if (mp.count(wd) == 0)
+				mp[wd] = it->second;
+			else mp[wd] = mp[wd] + it->second;
+		}
+		words_mp = mp;
+	}
 	map<string, int>::iterator  it;
 	for (it = words_mp.begin(); it != words_mp.end(); it++) {
 		if (stopwords_mp.count(it->first) == 0) {//停词表中没有这个单词就加入到统计中
@@ -179,16 +270,20 @@ void WF_f::get_word_sequence() {
 /*
  * 这个函数加了num限制，用于输出频率排行，可以被反复调用
  */
-void WF_f::solve(string file_path, bool _n, int _n_num, bool _x, string _x_file_path) {
+void WF_f::solve(string file_path, bool _n, int _n_num, bool _x, string _x_file_path,bool _v,string _v_file_path) {
+	if (_v) {
+		get_verbs(_v_file_path);
+	}
 	if (_x) {//如果设置了挺词表
 		get_stopwords(_x_file_path);
 		//print_stopwords();
 	}
+
 	get_words(file_path);
-	get_word_sequence();
+	get_word_sequence(_v);
 	print_cnt(_n, _n_num);
 }
-void WF_f::Solve(string file_path, bool _n, int _n_num, bool _x, string _x_file_path) {
+void WF_f::Solve(string file_path, bool _n, int _n_num, bool _x, string _x_file_path, bool _v, string _v_file_path) {
 	WF_f wf_f;
-	wf_f.solve(file_path,_n,_n_num,_x,_x_file_path);
+	wf_f.solve(file_path,_n,_n_num,_x,_x_file_path,_v,_v_file_path);
 }

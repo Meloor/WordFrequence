@@ -220,10 +220,10 @@ void Go::solve(int argc, char *argv[]) {
 	}
 	else if (_f) {
 		if (_d) {
-			WF_d::Solve_f(file_path,_n,_n_num, _x,_x_file_path,_s);
+			WF_d::Solve_f(file_path,_n,_n_num, _x,_x_file_path,_v,_v_file_path,_s);
 		}
 		else{
-			WF_f::Solve(file_path,_n,_n_num,_x,_x_file_path);
+			WF_f::Solve(file_path,_n,_n_num,_x,_x_file_path,_v,_v_file_path);
 		}
 	}
 	else if (_p) {
